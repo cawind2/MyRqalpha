@@ -8,6 +8,14 @@ from sqlalchemy import create_engine
 df = ts.get_k_data('000001',index=True)
 df1 =ts.get_stock_basics()
 
+# 取2017。 4 财务报表
+df2=ts.get_report_data(2017,4)
+df3=ts.get_profit_data(2017,4)
+df4=ts.get_operation_data(2017,4)
+df5=ts.get_growth_data(2017,4)
+df6=ts.get_debtpaying_data(2017,4)
+df7=ts.get_cashflow_data(2017,4)
+
 # 此脚本每天早上0730运行
 # 1.取最新的上证综指
 # 2.取最新的上市公司基本信息
@@ -18,10 +26,24 @@ engine = create_engine("mssql+pymssql://sa:123456@127.0.0.1/F10_PICK")
 conn = engine.connect()
 conn.execute('delete from tb_sh_index')
 conn.execute('delete from tb_stock_basics')
+
+conn.execute('delete from tb_profit_report1')
+conn.execute('delete from tb_profit_data1')
+conn.execute('delete from tb_operation_data1')
+conn.execute('delete from tb_growth_data1')
+conn.execute('delete from tb_debtpaying_data1')
+conn.execute('delete from tb_cashflow_data1')
 conn.close()
 
 df.to_sql('tb_sh_index',engine,if_exists='append',index=False)
 df1.to_sql('tb_stock_basics',engine,if_exists='append',index=True)
+
+df2.to_sql('tb_profit_report1',engine,if_exists='append',index=False)
+df3.to_sql('tb_profit_data1',engine,if_exists='append',index=False)
+df4.to_sql('tb_operation_data1',engine,if_exists='append',index=False)
+df5.to_sql('tb_growth_data1',engine,if_exists='append',index=False)
+df6.to_sql('tb_debtpaying_data1',engine,if_exists='append',index=False)
+df7.to_sql('tb_cashflow_data1',engine,if_exists='append',index=False)
 
 s='''update tb_stock_basics
 set tb_stock_basics.name=tb_stock_info.name,

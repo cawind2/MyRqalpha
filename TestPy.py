@@ -8,6 +8,7 @@ def init(context):
     context.s1 = "000423.XSHE"
     context.s2 = "601800.XSHG"
     context.stocks = [context.s1,context.s2]
+    # logger.info(history_bars('000423.XSHE',5,'1d','close'))
     update_universe(context.stocks)
     # 是否已发送了order
     context.fired = False
@@ -16,6 +17,8 @@ def init(context):
 
 def before_trading(context, bar_dict):
     logger.info("Before Trading", context.cnt)
+    # logger.info(history_bars('000423.XSHE',5,'1d','close'))
+    # logger.info("close", bar_dict['000423.XSHE'].close)
     context.cnt += 1
 
 
@@ -23,6 +26,7 @@ def before_trading(context, bar_dict):
 def handle_bar(context, bar_dict):
     context.cnt += 1
     logger.info("handle_bar", context.cnt)
+    logger.info("close", bar_dict['000423.XSHE'].close)
     # 开始编写你的主要的算法逻辑
 
     # bar_dict[order_book_id] 可以拿到某个证券的bar信息
