@@ -42,7 +42,7 @@ def handle_bar(context, bar_dict):
 
 config = {
     "base":{
-        "data_bundle_path":"d:/PythonProject/bundle/bundle",
+        "data_bundle_path":"E:/PycharmProjects/bundle",
         "start_date":"2018-01-01",
         "end_date":"2018-01-27",
         "benchmark":"000300.XSHG",
@@ -60,5 +60,7 @@ config = {
         }
     }
 }
+
+
 
 run_func(init=init,before_trading=before_trading, handle_bar=handle_bar,config=config)

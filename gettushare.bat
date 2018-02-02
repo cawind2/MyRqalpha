@@ -1,0 +1,1 @@
+e:\PycharmProjects\GetFile\Scripts\python.exe e:\PycharmProjects\TestTu\GetTushare.py
