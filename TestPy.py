@@ -14,7 +14,6 @@ def init(context):
     context.fired = False
     context.cnt = 1
 
-
 def before_trading(context, bar_dict):
     logger.info("Before Trading", context.cnt)
     # logger.info(history_bars('000423.XSHE',5,'1d','close'))
@@ -35,12 +34,23 @@ def handle_bar(context, bar_dict):
     # 使用order_shares(id_or_ins, amount)方法进行落单
 
     # TODO: 开始编写你的算法吧！
+    if context.now.hour == 14 and context.now.minute== 50:
+        # 查询持仓股票
+        # 如果持仓有股票已经超过期望值x,就调仓
+        for stock in context.portfolio.positions:
+            oldervalue = context.portfolio.positions[stock].avg_price
+            totalvalue = oldervalue * context.portfolio.positions[stock].quantity
+
+        pass
+
+    '''
     if not context.fired:
         for stock in context.stocks:
             order_percent(stock,0.5)
         # order_percent并且传入1代表买入该股票并且使其占有投资组合的100%
         # order_percent(context.s1, 1)
         context.fired = True
+     '''
 
 
 
