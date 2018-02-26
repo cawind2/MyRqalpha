@@ -5,7 +5,7 @@ import pymssql
 import csv
 from sqlalchemy import create_engine
 
-# df = ts.get_day_all('2018-02-22'
+# df = ts.get_day_all('2018-02-22')
 
 engine = create_engine("mssql+pymssql://sa:123456@127.0.0.1/F10_PICK")
 # conn = engine.connect()
