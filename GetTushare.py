@@ -19,7 +19,8 @@ df7=ts.get_cashflow_data(2017,4)
 # 此脚本每天早上0730运行
 # 1.取最新的上证综指
 # 2.取最新的上市公司基本信息
-# 3.取港资持股的股票前2个月价格信息（持股信息由.net程序更新(早上0700运行），存放在csv文件中，然后由.net程序(早上0800）读入数据库
+# 3.取消了---取港资持股的股票前2个月价格信息（持股信息由.net程序更新(早上0700运行），存放在csv文件中，然后由.net程序(早上0800）读入数据库
+# 3。取昨天全天股票行情数据
 
 # engine = create_engine("mssql+pymssql://sa:123456@127.0.0.1/F10_PICK",encoding='gbk')
 engine = create_engine("mssql+pymssql://sa:123456@127.0.0.1/F10_PICK")
@@ -66,6 +67,45 @@ twomonthago=now-delta2
 yesterdayst=yesterday.strftime('%Y-%m-%d')
 twomonthagost=twomonthago.strftime('%Y-%m-%d')
 
+# 取昨天股票数据全部
+cal = ts.trade_cal()
+if cal.loc[cal['calendarDate']==yesterdayst]['isOpen'] == 1:
+    dftrade = ts.get_day_all(yesterdayst)
+    dftrade['date'] = yesterdayst
+    dftrade.to_sql('tb_stock',engine,if_exists='append',index=False)
+    pass
+#    pass
+
+s1='''update tb_stock
+set tb_stock.name=tb_stock_info.name,
+tb_stock.industry=tb_stock_info.industry,
+tb_stock.area=tb_stock_info.area
+from tb_stock,tb_stock_info
+where tb_stock.code=tb_stock_info.code
+and tb_stock.date=
+'''
+s2 = '\''+yesterdayst+'\''
+
+conn = engine.connect()
+conn.execute(s1+s2)
+conn.close()
+'''
+# 取交易日
+cal = ts.trade_cal()
+# start from 2017-07-03
+istartday = 9693
+# end 2018-02-25
+iendday= 9930
+for each in range(9693,9930):
+    if cal.loc[each]['isOpen'] == 1:
+        tradedate = cal.loc[each]['calendarDate']
+        dftrade = ts.get_day_all(tradedate)
+        dftrade['date'] = tradedate
+        dftrade.to_sql('tb_stock',engine,if_exists='append',index=False)
+        pass
+    pass
+
+
 # 取港资持股股票价格, 2个月的价格,存放在csv文件中，然后由.net程序导入数据库，重复数据不导入
 sql='select code from tb_hk_shareholder where [date]=' + '\''+yesterdayst+'\''
 conn = engine.connect()
@@ -77,7 +117,7 @@ for each in allname:
     code=each[0][1:7]
     df2=ts.get_k_data(code,start=twomonthagost,end=yesterdayst,index=False)
     df2.to_csv('e:/tempstock.csv',mode='a',header=None,index=False)
-'''
+
 s = s1+s2+s3+s4+s5
 # s.format(startdate,enddate)
 conn = engine.connect()

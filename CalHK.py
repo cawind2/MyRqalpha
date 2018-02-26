@@ -6,6 +6,7 @@ import csv
 from sqlalchemy import create_engine
 
 # df = ts.get_day_all('2018-02-22')
+# print df.loc[df['code'] == '600903']
 
 engine = create_engine("mssql+pymssql://sa:123456@127.0.0.1/F10_PICK")
 # conn = engine.connect()
