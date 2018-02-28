@@ -75,13 +75,13 @@ conn = engine.connect()
 conn.execute(s)
 
 #更新report_date 数据
-conn.execute('update tb_report_data set report_date1='+'\''+'2018-'+'\'' + ' report_date where [date]= ' + '\''+'201704'+'\'')
+conn.execute('update tb_report_data set report_date1='+'\''+'2018-'+'\'' + ' + report_date where [date]= ' + '\''+'201704'+'\'')
 
-conn.execute('update tb_report_data set report_date1='+'\''+'2017-'+'\'' + ' report_date where [date]= ' + '\''+'201703'+'\'' + ' and report_date >= ' + '\''+'10'+'\'' )
-conn.execute('update tb_report_data set report_date1='+'\''+'2018-'+'\'' + ' report_date where [date]= ' + '\''+'201703'+'\'' + ' and report_date < ' + '\''+'10'+'\'' )
+conn.execute('update tb_report_data set report_date1='+'\''+'2017-'+'\'' + ' + report_date where [date]= ' + '\''+'201703'+'\'' + ' and report_date >= ' + '\''+'10'+'\'' )
+conn.execute('update tb_report_data set report_date1='+'\''+'2018-'+'\'' + ' + report_date where [date]= ' + '\''+'201703'+'\'' + ' and report_date < ' + '\''+'10'+'\'' )
 
-conn.execute('update tb_report_data set report_date1='+'\''+'2017-'+'\'' + ' report_date where [date]= ' + '\''+'201702'+'\'' + ' and report_date >= ' + '\''+'07'+'\'' )
-conn.execute('update tb_report_data set report_date1='+'\''+'2018-'+'\'' + ' report_date where [date]= ' + '\''+'201702'+'\'' + ' and report_date < ' + '\''+'07'+'\'' )
+conn.execute('update tb_report_data set report_date1='+'\''+'2017-'+'\'' + ' + report_date where [date]= ' + '\''+'201702'+'\'' + ' and report_date >= ' + '\''+'07'+'\'' )
+conn.execute('update tb_report_data set report_date1='+'\''+'2018-'+'\'' + ' + report_date where [date]= ' + '\''+'201702'+'\'' + ' and report_date < ' + '\''+'07'+'\'' )
 
 conn.close()
 #conn = engine.connect()
