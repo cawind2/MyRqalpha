@@ -25,6 +25,8 @@ df7=ts.get_cashflow_data(2017,4)
 # engine = create_engine("mssql+pymssql://sa:123456@127.0.0.1/F10_PICK",encoding='gbk')
 engine = create_engine("mssql+pymssql://sa:123456@127.0.0.1/F10_PICK")
 conn = engine.connect()
+
+
 conn.execute('delete from tb_sh_index')
 conn.execute('delete from tb_stock_basics')
 
@@ -138,6 +140,7 @@ for each in allname:
     df=ts.get_k_data(code,start=twomonthagost,end=yesterdayst,index=False)
     df.to_sql('tb_temp_stock',engine,if_exists='append',index=False)
     # df.to_csv('e:/tempstock.csv',mode='a',header=None,index=False)
+    # df2.to_csv('d:/r1.csv',mode='a',header=None,index=False, encoding='utf8')
 
 
 
