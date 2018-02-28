@@ -1,1 +1,1 @@
-e:\PycharmProjects\GetFile\Scripts\python.exe e:\PycharmProjects\TestTu\GetTushare.py
+e:\PycharmProjects\GetFile\Scripts\python.exe E:\PycharmProjects\MyRqalpha\GetTushare.py

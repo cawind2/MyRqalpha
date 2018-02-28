@@ -10,6 +10,11 @@ df1 =ts.get_stock_basics()
 
 # 取2017。 4 财务报表
 df2=ts.get_report_data(2017,4)
+# 取2017。3财务报表， 有些公司会拖到下一年度，所以要更新
+# 其它报表不更新了，主要要报表日期 report_date
+df2_1 = ts.get_report_data(2017,3)
+df2_2 = ts.get_report_data(2017,2)
+
 df3=ts.get_profit_data(2017,4)
 df4=ts.get_operation_data(2017,4)
 df5=ts.get_growth_data(2017,4)
@@ -30,6 +35,10 @@ conn = engine.connect()
 conn.execute('delete from tb_sh_index')
 conn.execute('delete from tb_stock_basics')
 
+conn.execute('delete from tb_report_data where [date]=' + '\''+'201704'+'\'')
+conn.execute('delete from tb_report_data where [date]=' + '\''+'201703'+'\'')
+conn.execute('delete from tb_report_data where [date]=' + '\''+'201702'+'\'')
+
 conn.execute('delete from tb_profit_report1')
 conn.execute('delete from tb_profit_data1')
 conn.execute('delete from tb_operation_data1')
@@ -41,7 +50,14 @@ conn.close()
 df.to_sql('tb_sh_index',engine,if_exists='append',index=False)
 df1.to_sql('tb_stock_basics',engine,if_exists='append',index=True)
 
-df2.to_sql('tb_profit_report1',engine,if_exists='append',index=False)
+# df2.to_sql('tb_profit_report1',engine,if_exists='append',index=False)
+df2['date']='201704'
+df2.to_sql('tb_report_data',engine,if_exists='append',index=False)
+df2_1['date'] = '201703'
+df2_1.to_sql('tb_report_data',engine,if_exists='append',index=False)
+df2_2['date'] = '201702'
+df2_2.to_sql('tb_report_data',engine,if_exists='append',index=False)
+
 df3.to_sql('tb_profit_data1',engine,if_exists='append',index=False)
 df4.to_sql('tb_operation_data1',engine,if_exists='append',index=False)
 df5.to_sql('tb_growth_data1',engine,if_exists='append',index=False)
@@ -57,6 +73,16 @@ where tb_stock_basics.code=tb_stock_info.code
 '''
 conn = engine.connect()
 conn.execute(s)
+
+#更新report_date 数据
+conn.execute('update tb_report_data set report_date1='+'\''+'2018-'+'\'' + ' report_date where [date]= ' + '\''+'201704'+'\'')
+
+conn.execute('update tb_report_data set report_date1='+'\''+'2017-'+'\'' + ' report_date where [date]= ' + '\''+'201703'+'\'' + ' and report_date >= ' + '\''+'10'+'\'' )
+conn.execute('update tb_report_data set report_date1='+'\''+'2018-'+'\'' + ' report_date where [date]= ' + '\''+'201703'+'\'' + ' and report_date < ' + '\''+'10'+'\'' )
+
+conn.execute('update tb_report_data set report_date1='+'\''+'2017-'+'\'' + ' report_date where [date]= ' + '\''+'201702'+'\'' + ' and report_date >= ' + '\''+'07'+'\'' )
+conn.execute('update tb_report_data set report_date1='+'\''+'2018-'+'\'' + ' report_date where [date]= ' + '\''+'201702'+'\'' + ' and report_date < ' + '\''+'07'+'\'' )
+
 conn.close()
 #conn = engine.connect()
 
@@ -71,7 +97,8 @@ twomonthagost=twomonthago.strftime('%Y-%m-%d')
 
 # 取昨天股票数据全部
 cal = ts.trade_cal()
-if cal.loc[cal['calendarDate']==yesterdayst]['isOpen'] == 1:
+isopen = cal.loc[cal['calendarDate']==yesterdayst]
+if isopen.loc[isopen.index[0],'isOpen'] == 1:
     dftrade = ts.get_day_all(yesterdayst)
     dftrade['date'] = yesterdayst
     dftrade.to_sql('tb_stock',engine,if_exists='append',index=False)
